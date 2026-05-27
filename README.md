@@ -145,11 +145,8 @@ Sensores IoT (Fase 3)         Visão Computacional (Fase 6)
 
 ## 🏗️ Arquitetura Geral do Sistema
 
+<img width="1024" height="1536" alt="Estrutura projeto" src="https://github.com/user-attachments/assets/bc779437-0d49-4901-888f-294f454b189e" />
 
- xxx
-
- 
- 
 ## 🚀 Como Executar
  
 ### Pré-requisitos
