@@ -59,7 +59,7 @@ A dashboard da Fase 4 foi completamente aprimorada para centralizar o acesso a t
 | **Dados em tempo real** | xxxx | xxx |
 | **Alertas** | Ausentes | E-mail/SMS via AWS SNS + SES |
 | **Visão Computacional** | xxx | xxx |
-| **IoT** | xxx | Monitorado em painel dedicado |
+| **IoT** | xxx | xxx |
 | **Relatórios** |xxx | xxx |
  
 ---
@@ -78,10 +78,11 @@ farmtech/
 ├── fase2/
 │   └── banco_dados.py         ← CRUD Oracle / SQLite
 
-**preencher diretório**
+
 
 
 ```
+ **preencher diretório**
  
 ---
 
@@ -138,6 +139,9 @@ Sensores IoT (Fase 3)         Visão Computacional (Fase 6)
   🔗 Acessar Dashboard: https://farmtech.aws.com
 ─────────────────────────────────────────────────
 ```
+
+
+**Adicionar imagem comprovação**
 
 ## 🏗️ Arquitetura Geral do Sistema
 
@@ -212,7 +216,7 @@ python-dotenv         # Variáveis de ambiente
 opencv-python         # Visão computacional
 rpy2                  # Interface Python ↔ R (Fase 1)
 ```
- 
+ **verificar se nenhum ficou de fora**
 ---
  
 ## ☁️ Serviço de Alertas AWS — Evidências
