@@ -1,7 +1,6 @@
 import boto3
 from config_aws import *
 
-# Inicializa cliente SNS
 sns = boto3.client(
     "sns",
     region_name=AWS_REGION,
@@ -11,7 +10,6 @@ sns = boto3.client(
 )
 
 def enviar_alerta(mensagem: str, assunto: str = "FarmTech - Alerta"):
-    """Publica uma mensagem no tópico SNS."""
     try:
         response = sns.publish(
             TopicArn=SNS_TOPIC_ARN,
@@ -25,47 +23,51 @@ def enviar_alerta(mensagem: str, assunto: str = "FarmTech - Alerta"):
         return False
 
 
-def verificar_sensores(ph: float, umidade: float, praga_detectada: bool):
+def verificar_sensores(umidade: float, ph: float, praga_detectada: bool = False):
     """
-    Regras de alerta definidas pelo grupo.
-    Recebe leituras das Fases 1, 3 ou resultado da Fase 6.
+    Usa os mesmos nomes e limites do sketch.ino (Fase 3)
+    e do treinar_modelo.py (Fase 4).
     """
     alertas = []
 
-    # Regra 1 — pH fora do ideal (Fase 1 / Fase 3)
-    if ph < 5.5:
+    # --- pH (mesmas faixas do analisar_ph() no sketch.ino) ---
+    if ph < 4.8:
         alertas.append(
-            f"⚠️ pH BAIXO detectado: {ph:.1f}\n"
-            "Ação: Aplicar calcário para corrigir acidez do solo."
+            f"⚠️ pH BAIXO: {ph:.2f}\n"
+            "Ação: Solicitar K (Potássio) — mesmo critério do ESP32."
         )
-    elif ph > 7.0:
+    elif ph > 6.2 and ph < 8.0:
         alertas.append(
-            f"⚠️ pH ALTO detectado: {ph:.1f}\n"
-            "Ação: Verificar salinidade e aplicar corretivo adequado."
+            f"⚠️ pH MÉDIO-ALTO: {ph:.2f}\n"
+            "Ação: Solicitar N (Nitrogênio)."
+        )
+    elif ph >= 8.0:
+        alertas.append(
+            f"⚠️ pH ALTO: {ph:.2f}\n"
+            "Ação: Solicitar P (Fósforo)."
         )
 
-    # Regra 2 — Umidade baixa (Fase 3)
-    if umidade < 30.0:
+    # --- Umidade (mesmos limites UMI_ON/UMI_OFF do sketch.ino) ---
+    if umidade <= 40.0:
         alertas.append(
             f"💧 UMIDADE CRÍTICA: {umidade:.1f}%\n"
-            "Ação: Acionar irrigação imediatamente na zona afetada."
+            "Ação: Acionar bomba de irrigação (limite UMI_ON=40%)."
         )
 
-    # Regra 3 — Praga detectada pelo YOLO (Fase 6)
+    # --- Visão computacional Fase 6 ---
     if praga_detectada:
         alertas.append(
-            "🐛 PRAGA DETECTADA pela visão computacional.\n"
-            "Ação: Acionar equipe de defensivos agrícolas urgente."
+            "🐛 PRAGA DETECTADA pelo modelo YOLO (Fase 6).\n"
+            "Ação: Acionar equipe de defensivos agrícolas."
         )
 
-    # Dispara um único e-mail consolidado se houver alertas
     if alertas:
         corpo = "=== ALERTAS FARMTECH ===\n\n" + "\n\n".join(alertas)
         enviar_alerta(corpo, assunto="FarmTech - Ação Necessária")
     else:
-        print("✅ Todos os sensores dentro dos parâmetros normais.")
+        print("✅ Sensores dentro dos parâmetros normais.")
 
 
-# Teste rápido (pode remover depois)
 if __name__ == "__main__":
-    verificar_sensores(ph=5.1, umidade=25.0, praga_detectada=True)
+    # Teste com valores reais dos seus limites
+    verificar_sensores(umidade=38.5, ph=4.5, praga_detectada=False)
