@@ -141,7 +141,18 @@ Sensores IoT (Fase 3)         Visão Computacional (Fase 6)
 ```
 
 
-**Adicionar imagem comprovação**
+#### Comprovação de Funcionamento
+
+O serviço foi testado com sucesso via AWS Learner Lab. 
+O e-mail abaixo foi recebido após execução do `alertas_aws.py` com leituras críticas simuladas:
+
+> 📸 ![E-mail de alerta recebido](docs/aws/email_alerta.png)
+
+**Remetente:** `farmtech-alertas <no-reply@sns.amazonaws.com>`  
+**Destinatário:** e-mail institucional FIAP do grupo  
+**Alertas disparados:**
+- ⚠️ pH BAIXO: 4.50 → Solicitar K (Potássio)
+- 💧 UMIDADE CRÍTICA: 38.5% → Acionar bomba de irrigação
 
 ## 🏗️ Arquitetura Geral do Sistema
 
@@ -217,8 +228,36 @@ rpy2                  # Interface Python ↔ R (Fase 1)
 ---
  
 ## ☁️ Serviço de Alertas AWS — Evidências
- 
-> Prints e comentários da configuração na AWS estão na pasta [`/docs/aws/`](./docs/aws/) deste repositório.
+
+### Configuração do Tópico SNS
+
+1. Acesse o console AWS → SNS → Topics
+2. Criamos o tópico `farmtech-alertas` (tipo: Standard, região: us-east-1)
+3. Adicionamos subscription com Protocol: Email, Endpoint: e-mail do grupo
+
+> 📸 ![Tópico SNS criado](docs/aws/sns_topico.png)
+
+> 📸 ![Subscription confirmada](docs/aws/sns_subscription.png)
+
+### Arquivo de integração — `alertas_aws.py`
+
+O serviço é chamado diretamente pela dashboard ou via terminal:
+
+```bash
+python alertas_aws.py
+```
+
+As credenciais ficam em `config_aws.py` (não versionado — listado no `.gitignore`):
+
+```python
+AWS_ACCESS_KEY_ID     = "sua_chave"
+AWS_SECRET_ACCESS_KEY = "sua_chave_secreta"
+AWS_SESSION_TOKEN     = "seu_token"       # necessário no Learner Lab
+AWS_REGION            = "us-east-1"
+SNS_TOPIC_ARN         = "arn:aws:sns:us-east-1:XXXX:farmtech-alertas"
+```
+
+> ⚠️ As credenciais do Learner Lab expiram a cada sessão e devem ser atualizadas antes de executar.
  
 ### Serviços AWS Utilizados
  
