@@ -235,9 +235,7 @@ rpy2                  # Interface Python ↔ R (Fase 1)
 2. Criamos o tópico `farmtech-alertas` (tipo: Standard, região: us-east-1)
 3. Adicionamos subscription com Protocol: Email, Endpoint: e-mail do grupo
 
-> 📸 ![Tópico SNS criado](docs/aws/sns_topico.png)
-
-> 📸 ![Subscription confirmada](docs/aws/sns_subscription.png)
+> 📸 ![Tópico SNS criado e Subscription confirmada](docs/aws/sns_topico.png)
 
 ### Arquivo de integração — `alertas_aws.py`
 
