@@ -15,7 +15,7 @@ def conectar_banco():
                 data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
-        return "✅ Conexão com o Banco de Dados (Fase 2) estabelecida com sucesso!"
+        return "✅ Conexão com o Banco de Dados estabelecida com sucesso!"
     except Exception as e:
         return f"❌ Erro ao conectar no banco: {e}"
 
