@@ -6,7 +6,7 @@ from fase3 import esp32_sensor_sim
 
 st.title("🚜 Teste de Integração - Fases 1, 2 e 3")
 
-# Cria as 3 abas exigidas na sua tarefa
+# Cria as 3 
 aba1, aba2, aba3 = st.tabs(["Fase 1 (Cálculos)", "Fase 2 (Banco/Clima)", "Fase 3 (IoT)"])
 
 with aba1:
@@ -21,7 +21,7 @@ with aba1:
 
 with aba2:
     st.header("Teste: Conexão com Banco de Dados")
-    # Chamando a conexão do banco que criamos na Fase 2
+    # Chamando a conexão do banco 
     status_banco = banco_dados.conectar_banco()
     if "✅" in status_banco:
         st.success(status_banco)
@@ -39,7 +39,7 @@ with aba2:
 with aba3:
     st.header("Teste: Sensores IoT (ESP32)")
     st.write("Lendo os sensores virtuais:")
-    # Chamando sua função do ESP32 (se o nome da função for outro, ajuste a linha abaixo)
+    # Chamando a função de leitura dos sensores do ESP32
     try:
         dados_iot = esp32_sensor_sim.ler_sensores_esp32()
         st.json(dados_iot)
