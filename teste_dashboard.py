@@ -6,13 +6,11 @@ from fase3 import esp32_sensor_sim
 
 st.title("🚜 Teste de Integração - Fases 1, 2 e 3")
 
-# Cria as 3 
 aba1, aba2, aba3 = st.tabs(["Fase 1 (Cálculos)", "Fase 2 (Banco/Clima)", "Fase 3 (IoT)"])
 
 with aba1:
     st.header("Teste: Cálculos de Área e Insumo")
     st.write("Simulando os dados que viriam do input do usuário:")
-    # Chamando sua função da Fase 1 (se o nome da sua função for outro, ajuste a linha abaixo)
     try:
         resultado_f1 = calculo_area.processar_dados_plantio("café", "Retângulo", 100, 50, "NPK", 1.5)
         st.json(resultado_f1)
