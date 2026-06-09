@@ -29,7 +29,7 @@ Este repositório representa a **Fase 7: A Consolidação**, onde todos os siste
 ╔══════════════════════════════════════════════════════════════════════╗
 ║               ECOSSISTEMA FARMTECH SOLUTIONS                        ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║  📐 FASE 1    Base de Dados + API Meteorológica + Análise R         ║
+║  📐 FASE 1    Base de Dados + API Meteorológica + Análise R          ║
 ║       ↓                                                              ║
 ║  🗃️  FASE 2    Banco de Dados Relacional (MER/DER + Oracle)         ║
 ║       ↓                                                              ║
@@ -55,12 +55,12 @@ A dashboard da Fase 4 foi completamente aprimorada para centralizar o acesso a t
  
 | Módulo | Antes (Fase 4) | Depois (Fase 7) |
 |--------|---------------|-----------------|
-| **Navegação** | xxxx | xxx |
-| **Dados em tempo real** | xxxx | xxx |
+| **Navegação** | Interface estática | Unificação de abas |
+| **Dados em tempo real** | Dados estáticos | API dinâmica + Banco SQLite |
 | **Alertas** | Ausentes | E-mail/SMS via AWS SNS + SES |
-| **Visão Computacional** | xxx | xxx |
-| **IoT** | xxx | xxx |
-| **Relatórios** |xxx | xxx |
+| **Visão Computacional** | Isolado no Colab | Integrado no front-end |
+| **IoT** | C++ | Python |
+| **Relatórios** | Terminal interativo de texto | Tabela interativa |
  
 ---
  
@@ -75,14 +75,19 @@ farmtech/
 │   ├── calculo_area.py        ← Cálculos de plantio e insumos
 │   ├── api_meteorologica.py   ← Integração com API de clima
 │   └── analise_r/             ← Scripts R para análise estatística
+|       └── Analise_dados_R/
+|       └── Desafio_API.r/        
 ├── fase2/
 │   └── banco_dados.py         ← CRUD Oracle / SQLite
-
-
-
-
+├── fase3/
+│   └── esp32_sensor_sim.py    ← Simulação ESP32
+├── documentos/
+│   └── aws/
+|       └── alertas_aws.py     ← Autoamção envio e-mail
+|       └── email_alerta.png   ← Imagens AWS
+|       └── sns_topico.png
 ```
- **preencher diretório**
+
  
 ---
 
@@ -97,9 +102,9 @@ Sensores IoT (Fase 3)         Visão Computacional (Fase 6)
       │                                  │
       ▼                                  ▼
 ┌─────────────────────────────────────────────────┐
-│              AWS Lambda (Processamento)          │
-│  - Verifica umidade < 30% → irrigar             │
-│  - Detecta pH fora da faixa → corrigir          │
+│              AWS Lambda (Processamento)         │
+│  - Verifica umidade → inteligência irrigação    │
+│  - Detecta pH fora da faixa → correção          │
 │  - Identifica praga na imagem → inspecionar     │
 └──────────────────────┬──────────────────────────┘
                        │
@@ -111,14 +116,16 @@ Sensores IoT (Fase 3)         Visão Computacional (Fase 6)
 ```
  
 #### Regras de Alerta Implementadas
- 
+
 | Sensor / Análise | Condição de Alerta | Ação Sugerida | Canal |
 |---|---|---|---|
-| Umidade do Solo (DHT22) | `< 30%` | Acionar irrigação imediata | SMS + E-mail |
-| pH do Solo (LDR) | `< 5.5` ou `> 7.5` | Aplicar calcário ou enxofre | E-mail |
-| Nível de Nutrientes | `< 20%` | Fertilização necessária | E-mail |
-| Visão Computacional (YOLO) | Confiança praga `> 80%` | Inspecionar setor indicado | SMS + E-mail |
-| Temperatura (Meteorologia) | `> 38°C` por 3h | Aumentar frequência de irrigação | E-mail |
+| Umidade do Solo | `<= 40.0%` | Acionar bomba de irrigação (limite `UMI_ON=40%`) | E-mail |
+| pH do Solo | `< 4.8` | Solicitar K (Potássio) | E-mail |
+| pH do Solo | `> 6.2 e < 8.0` | Solicitar N (Nitrogênio) | E-mail |
+| pH do Solo | `>= 8.0` | Solicitar P (Fósforo) | E-mail |
+| Visão Computacional (YOLO) | Praga detectada (`praga_detectada=True`) | Acionar equipe de defensivos agrícolas | E-mail |
+
+> Observação: quando um ou mais alertas são identificados, o sistema consolida as ocorrências e envia uma notificação com o assunto 
  
 #### Exemplo de E-mail de Alerta
  
