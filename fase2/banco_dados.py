@@ -30,7 +30,7 @@ def conectar_banco():
             )
         ''')
 
-        # 3. 4 culturas originais da Fase 1 pré-cadastradas no banco
+        # 3. 4 culturas da Fase 1 pré-cadastradas no banco
         cursor.execute('SELECT COUNT(*) FROM culturas')
         if cursor.fetchone()[0] == 0:
             culturas_iniciais = [
