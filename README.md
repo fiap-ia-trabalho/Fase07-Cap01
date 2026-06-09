@@ -163,7 +163,7 @@ O e-mail abaixo foi recebido após execução do `alertas_aws.py` com leituras c
 
 ## 🏗️ Arquitetura Geral do Sistema
 
-<img width="1024" height="1536" alt="Estrutura projeto" src="https://github.com/user-attachments/assets/bc779437-0d49-4901-888f-294f454b189e" />
+<img width="1024" height="1535" alt="ChatGPT Image 8 de jun  de 2026, 21_13_56" src="https://github.com/user-attachments/assets/cc4f2c38-89f1-46e0-a48c-30a29fae8d9e" />
 
 ## 🚀 Como Executar
  
