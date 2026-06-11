@@ -446,7 +446,7 @@ FIAP/
  
 ## 🎬 Vídeo Demonstrativo
  
-📹 [Assistir no YouTube (não listado)](xxx)
+📹 [Assistir no YouTube](https://youtu.be/gni1MdCpAXg)
  
 > Vídeo de até 10 minutos demonstrando todas as funcionalidades das Fases 1 a 7, incluindo:
 > - Execução da dashboard integrada
