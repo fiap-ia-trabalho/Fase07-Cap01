@@ -1,13 +1,35 @@
-import boto3
-from config_aws import *
+import os
 
-sns = boto3.client(
-    "sns",
-    region_name=AWS_REGION,
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    aws_session_token=AWS_SESSION_TOKEN
+import boto3
+
+AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
+SNS_TOPIC_ARN = os.environ.get(
+    "SNS_TOPIC_ARN",
+    "arn:aws:sns:us-east-1:111225937941:notificacoes-email",
 )
+
+try:
+    from config_aws import (
+        AWS_ACCESS_KEY_ID,
+        AWS_SECRET_ACCESS_KEY,
+        AWS_SESSION_TOKEN,
+        AWS_REGION as _REGION,
+        SNS_TOPIC_ARN as _ARN,
+    )
+
+    AWS_REGION = _REGION
+    SNS_TOPIC_ARN = _ARN
+    client_kwargs = {
+        "region_name": AWS_REGION,
+        "aws_access_key_id": AWS_ACCESS_KEY_ID,
+        "aws_secret_access_key": AWS_SECRET_ACCESS_KEY,
+    }
+    if AWS_SESSION_TOKEN:
+        client_kwargs["aws_session_token"] = AWS_SESSION_TOKEN
+    sns = boto3.client("sns", **client_kwargs)
+except ImportError:
+    sns = boto3.client("sns", region_name=AWS_REGION)
+
 
 def enviar_alerta(mensagem: str, assunto: str = "FarmTech - Alerta"):
     try:
